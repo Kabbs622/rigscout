@@ -14,6 +14,7 @@
 <meta name="twitter:description" content="The gear recommendation tool built by filmmakers, for filmmakers.">
 <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='20' fill='%23dc2626'/><text x='50' y='72' font-family='sans-serif' font-size='65' font-weight='bold' fill='white' text-anchor='middle'>R</text></svg>">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<script defer data-domain="rigscout.c41cinema.com" src="https://plausible.io/js/script.js"></script>
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 :root{
@@ -62,11 +63,15 @@ nav .nav-inner{max-width:1080px;margin:0 auto;display:flex;align-items:center;ju
 .hub-bg{position:absolute;inset:0;overflow:hidden}
 .hub-bg::before{content:'';position:absolute;top:-30%;left:50%;transform:translateX(-50%);width:800px;height:800px;background:radial-gradient(circle,rgba(220,38,38,.12) 0%,transparent 70%);pointer-events:none}
 .hub-bg::after{content:'';position:absolute;bottom:-20%;right:-10%;width:600px;height:600px;background:radial-gradient(circle,rgba(34,197,94,.06) 0%,transparent 70%);pointer-events:none}
+/* Subtle design texture elements */
+#hub-screen::before{content:'';position:absolute;top:20%;left:10%;width:120px;height:120px;border:1px solid rgba(255,255,255,.03);border-radius:50%;background:conic-gradient(from 0deg,transparent,rgba(255,255,255,.02) 45deg,transparent 90deg,rgba(255,255,255,.02) 135deg,transparent 180deg,rgba(255,255,255,.02) 225deg,transparent 270deg,rgba(255,255,255,.02) 315deg,transparent);pointer-events:none;z-index:1}
+#hub-screen::after{content:'';position:absolute;bottom:25%;right:15%;width:80px;height:80px;border:1px solid rgba(255,255,255,.025);border-radius:8px;background:linear-gradient(45deg,transparent 49%,rgba(255,255,255,.015) 49%,rgba(255,255,255,.015) 51%,transparent 51%),linear-gradient(-45deg,transparent 49%,rgba(255,255,255,.015) 49%,rgba(255,255,255,.015) 51%,transparent 51%);background-size:12px 12px;pointer-events:none;z-index:1}
 
 .hub-content{position:relative;text-align:center;max-width:720px;padding:100px 24px 40px}
 .hub-badge{display:inline-flex;align-items:center;gap:6px;padding:6px 14px;background:var(--glass2);border:1px solid var(--border);border-radius:100px;font-size:12px;color:var(--text2);margin-bottom:28px;font-weight:500}
 .hub-badge .dot{width:6px;height:6px;border-radius:50%;background:var(--green);animation:pulse 2s infinite}
-h1.hub-title{font-size:clamp(36px,6vw,56px);font-weight:800;letter-spacing:-1.5px;line-height:1.1;margin-bottom:16px;background:linear-gradient(135deg,#fff 0%,#a0a0a8 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+h1.hub-title{font-size:clamp(36px,6vw,56px);font-weight:800;letter-spacing:-1.5px;line-height:1.1;margin-bottom:12px;background:linear-gradient(135deg,#fff 0%,#a0a0a8 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.hub-tagline{font-size:14px;color:var(--text2);line-height:1.5;margin-bottom:20px;font-weight:400;max-width:480px;margin-left:auto;margin-right:auto;opacity:.8}
 .hub-subtitle{font-size:clamp(16px,2.5vw,18px);color:var(--text2);line-height:1.6;margin-bottom:48px;font-weight:400;max-width:540px;margin-left:auto;margin-right:auto}
 
 .quiz-hub-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(280px,100%),1fr));gap:16px;max-width:720px;width:100%;padding:0 24px;position:relative}
@@ -81,15 +86,17 @@ h1.hub-title{font-size:clamp(36px,6vw,56px);font-weight:800;letter-spacing:-1.5p
 .quiz-hub-card .card-badge{padding:3px 8px;background:var(--accent-glow);color:var(--accent2);border-radius:6px;font-weight:600;font-size:11px}
 .quiz-hub-card .card-badge.soon{background:var(--glass2);color:var(--text3)}
 
-/* How It Works video placeholder */
+/* How It Works 3-step section */
 .how-it-works-section{position:relative;max-width:720px;width:100%;padding:24px 24px 0}
-.how-it-works-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-xl);padding:24px;text-align:center}
+.how-it-works-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-xl);padding:28px;text-align:center}
 .how-it-works-card .hiw-label{font-size:13px;color:var(--accent2);font-weight:600;margin-bottom:4px}
-.how-it-works-card .hiw-title{font-size:16px;font-weight:700;margin-bottom:16px}
-.video-placeholder{width:100%;aspect-ratio:16/9;background:#0d0d0f;border-radius:var(--radius);display:flex;align-items:center;justify-content:center;cursor:pointer;position:relative;border:1px solid var(--border)}
-.video-placeholder .play-icon{width:64px;height:64px;background:rgba(255,255,255,.1);border-radius:50%;display:flex;align-items:center;justify-content:center;transition:background .2s}
-.video-placeholder:hover .play-icon{background:rgba(220,38,38,.3)}
-.play-icon::after{content:'';width:0;height:0;border-style:solid;border-width:12px 0 12px 22px;border-color:transparent transparent transparent rgba(255,255,255,.7);margin-left:4px}
+.how-it-works-card .hiw-title{font-size:16px;font-weight:700;margin-bottom:20px}
+.how-it-works-steps{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:20px;margin-top:8px}
+.hiw-step{background:var(--surface2);border:1px solid var(--border);border-radius:var(--radius);padding:20px;text-align:center;transition:all .2s ease}
+.hiw-step:hover{border-color:var(--accent);background:var(--accent-glow);transform:translateY(-2px)}
+.hiw-step-icon{font-size:28px;margin-bottom:12px}
+.hiw-step-title{font-size:15px;font-weight:700;margin-bottom:6px;color:var(--text)}
+.hiw-step-desc{font-size:13px;color:var(--text2);line-height:1.4}
 
 .coming-soon-section{position:relative;max-width:720px;width:100%;padding:40px 24px 0}
 .coming-soon-label{font-size:11px;color:var(--text3);text-transform:uppercase;letter-spacing:2px;font-weight:600;margin-bottom:14px}
@@ -467,6 +474,8 @@ footer{padding:32px 24px;text-align:center;color:var(--text3);font-size:12px;bor
   .stat-value{font-size:22px}
   .quiz-hub-grid{grid-template-columns:1fr}
   .coming-soon-grid{grid-template-columns:1fr 1fr}
+  .how-it-works-section{padding:16px 16px 0}
+  .how-it-works-steps{grid-template-columns:1fr}
 
   /* Quiz */
   .quiz-body{padding:70px 16px 32px}
@@ -587,6 +596,7 @@ footer{padding:32px 24px;text-align:center;color:var(--text3);font-size:12px;bor
   <div class="hub-content fade-up">
     <div class="hub-badge"><span class="dot"></span> Updated for 2026</div>
     <h1 class="hub-title">Find Your Rig</h1>
+    <p class="hub-tagline">Your rig is everything you shoot with — camera, lenses, audio, lights. We help you find the right one.</p>
     <p class="hub-subtitle">Cut through the noise. Answer a few questions, get a real recommendation.</p>
   </div>
 
@@ -610,13 +620,33 @@ footer{padding:32px 24px;text-align:center;color:var(--text3);font-size:12px;bor
     </div>
   </div>
 
-  <!-- How It Works video placeholder -->
+  <!-- How It Works 3-step section -->
   <div class="how-it-works-section fade-up" style="animation-delay:.2s">
     <div class="how-it-works-card">
-      <div class="hiw-label">New here?</div>
-      <div class="hiw-title">Watch a quick walkthrough</div>
-      <div class="video-placeholder" id="video-placeholder">
-        <div class="play-icon"></div>
+      <div class="hiw-label">How It Works</div>
+      <div class="hiw-title">Get matched in 3 simple steps</div>
+      <div class="how-it-works-steps">
+        <div class="hiw-step">
+          <div class="hiw-step-icon">📝</div>
+          <div class="hiw-step-content">
+            <div class="hiw-step-title">Take the Quiz</div>
+            <div class="hiw-step-desc">Answer 10 quick questions about how you shoot</div>
+          </div>
+        </div>
+        <div class="hiw-step">
+          <div class="hiw-step-icon">🎯</div>
+          <div class="hiw-step-content">
+            <div class="hiw-step-title">Get Matched</div>
+            <div class="hiw-step-desc">We recommend cameras that fit your style and budget</div>
+          </div>
+        </div>
+        <div class="hiw-step">
+          <div class="hiw-step-icon">📦</div>
+          <div class="hiw-step-content">
+            <div class="hiw-step-title">See Your Full Kit</div>
+            <div class="hiw-step-desc">Lenses, batteries, cards, and total cost breakdown</div>
+          </div>
+        </div>
       </div>
     </div>
   </div>
@@ -2104,6 +2134,31 @@ function libraryCompare() {
   document.getElementById('library-compare-content').innerHTML = html;
   showScreen('library-compare');
 }
+
+// ═══════════════════════════════════════════
+// PAGE VIEW ANALYTICS (localStorage fallback)
+// ═══════════════════════════════════════════
+(function() {
+  try {
+    const visits = JSON.parse(localStorage.getItem('rigscout_analytics') || '{}');
+    const today = new Date().toISOString().split('T')[0];
+    const currentVisits = visits[today] || 0;
+    visits[today] = currentVisits + 1;
+    
+    // Clean old entries (keep last 30 days)
+    const keys = Object.keys(visits);
+    if (keys.length > 30) {
+      keys.sort().slice(0, -30).forEach(key => delete visits[key]);
+    }
+    
+    localStorage.setItem('rigscout_analytics', JSON.stringify(visits));
+    
+    const totalVisits = Object.values(visits).reduce((sum, count) => sum + count, 0);
+    console.log(`RigScout Analytics: ${currentVisits} visits today, ${totalVisits} total in last 30 days`);
+  } catch(e) {
+    console.log('RigScout Analytics: localStorage tracking failed');
+  }
+})();
 
 // ═══════════════════════════════════════════
 // INIT
