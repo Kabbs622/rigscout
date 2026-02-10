@@ -3,7 +3,16 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>CameraMatch - Find Your Camera</title>
+<title>RigScout - Find Your Perfect Rig</title>
+<meta name="description" content="RigScout helps filmmakers and creators find the perfect camera, lens, and gear. Take the quiz or browse the library to find your next rig.">
+<meta property="og:title" content="RigScout - Find Your Perfect Rig">
+<meta property="og:description" content="The gear recommendation tool built by filmmakers, for filmmakers. Quiz, compare, and find your next rig.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://rigscout.c41cinema.com">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="RigScout - Find Your Perfect Rig">
+<meta name="twitter:description" content="The gear recommendation tool built by filmmakers, for filmmakers.">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='20' fill='%23dc2626'/><text x='50' y='72' font-family='sans-serif' font-size='65' font-weight='bold' fill='white' text-anchor='middle'>R</text></svg>">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
@@ -535,7 +544,7 @@ footer{padding:32px 24px;text-align:center;color:var(--text3);font-size:12px;bor
 
 <nav class="main-nav">
   <div class="nav-inner">
-    <div class="logo" onclick="goHome()"><div class="logo-icon">C</div> CameraMatch</div>
+    <div class="logo" onclick="goHome()"><div class="logo-icon">R</div> RigScout</div>
     <button class="nav-hamburger" onclick="document.querySelector('.nav-links').classList.toggle('open')" aria-label="Menu">☰</button>
     <div class="nav-links">
       <span class="nav-link" onclick="goHome()">Home</span>
@@ -880,7 +889,7 @@ footer{padding:32px 24px;text-align:center;color:var(--text3);font-size:12px;bor
   </div>
 </div>
 
-<footer>CameraMatch &copy; 2026. Prices are approximate. Always check before you buy.</footer>
+<footer>RigScout &copy; 2026. Prices are approximate. Always check before you buy.</footer>
 
 <script>
 // ═══════════════════════════════════════════
@@ -1871,9 +1880,9 @@ function submitFeedback() {
     answers: Object.assign({}, answers),
     url: window.location.href
   };
-  const existing = JSON.parse(localStorage.getItem('cameramatch-feedback') || '[]');
+  const existing = JSON.parse(localStorage.getItem('rigscout-feedback') || '[]');
   existing.push(entry);
-  localStorage.setItem('cameramatch-feedback', JSON.stringify(existing));
+  localStorage.setItem('rigscout-feedback', JSON.stringify(existing));
   showToast('✅ Feedback saved — thank you!');
   document.getElementById('fb-type').value = '';
   document.getElementById('fb-message').value = '';
