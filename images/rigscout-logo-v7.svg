@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48">
+  <!-- RigScout Icon v7 - Search/magnifying glass over film strip -->
+  <defs><linearGradient id="rg7" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" style="stop-color:#dc2626"/><stop offset="100%" style="stop-color:#b91c1c"/></linearGradient></defs>
+  <rect x="4" y="4" width="40" height="40" rx="10" fill="url(#rg7)"/>
+  <!-- Magnifying glass -->
+  <circle cx="21" cy="21" r="8" fill="none" stroke="#fff" stroke-width="2.5"/>
+  <line x1="27" y1="27" x2="36" y2="36" stroke="#fff" stroke-width="2.5" stroke-linecap="round"/>
+  <!-- Small play triangle inside the glass -->
+  <polygon points="19,17 19,25 25,21" fill="#fff" opacity="0.7"/>
+</svg>
