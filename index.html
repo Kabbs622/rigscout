@@ -28,6 +28,8 @@
 }
 html{font-family:'Inter',system-ui,sans-serif;background:var(--bg);color:var(--text);scroll-behavior:smooth;-webkit-font-smoothing:antialiased}
 body{min-height:100vh;overflow-x:hidden}
+img{max-width:100%;height:auto}
+*{-webkit-tap-highlight-color:transparent}
 a{color:var(--accent2);text-decoration:none}
 
 .container{max-width:1080px;margin:0 auto;padding:0 24px}
@@ -67,7 +69,7 @@ nav .nav-inner{max-width:1080px;margin:0 auto;display:flex;align-items:center;ju
 h1.hub-title{font-size:clamp(36px,6vw,56px);font-weight:800;letter-spacing:-1.5px;line-height:1.1;margin-bottom:16px;background:linear-gradient(135deg,#fff 0%,#a0a0a8 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
 .hub-subtitle{font-size:clamp(16px,2.5vw,18px);color:var(--text2);line-height:1.6;margin-bottom:48px;font-weight:400;max-width:540px;margin-left:auto;margin-right:auto}
 
-.quiz-hub-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:16px;max-width:720px;width:100%;padding:0 24px;position:relative}
+.quiz-hub-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(280px,100%),1fr));gap:16px;max-width:720px;width:100%;padding:0 24px;position:relative}
 .quiz-hub-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-xl);padding:28px;text-align:left;transition:all .3s ease;cursor:pointer;position:relative;overflow:hidden}
 .quiz-hub-card:hover{border-color:var(--accent);transform:translateY(-3px);box-shadow:0 8px 32px rgba(0,0,0,.3)}
 .quiz-hub-card.disabled{cursor:not-allowed;opacity:.5}
@@ -173,7 +175,7 @@ h1.hub-title{font-size:clamp(36px,6vw,56px);font-weight:800;letter-spacing:-1.5p
 .unified-comparison tr:last-child td,.unified-comparison tr:last-child th{border-bottom:none}
 
 /* Stretch pick & best overall cards */
-.extra-picks{max-width:960px;margin:32px auto 0;display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:16px}
+.extra-picks{max-width:960px;margin:32px auto 0;display:grid;grid-template-columns:repeat(auto-fit,minmax(min(300px,100%),1fr));gap:16px}
 .extra-pick-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-xl);padding:24px;position:relative;overflow:hidden}
 .extra-pick-card .epc-label{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;margin-bottom:12px;display:flex;align-items:center;gap:8px}
 .extra-pick-card.stretch .epc-label{color:var(--amber)}
@@ -268,7 +270,7 @@ h1.hub-title{font-size:clamp(36px,6vw,56px);font-weight:800;letter-spacing:-1.5p
 .item-image-box .item-img-icon{font-size:24px;opacity:.5;margin-bottom:4px}
 .item-image-box .item-img-name{font-size:10px;color:var(--text3);text-align:center;padding:0 8px;line-height:1.3}
 
-.lens-cards,.accessory-cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:14px;margin-bottom:20px}
+.lens-cards,.accessory-cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(280px,100%),1fr));gap:14px;margin-bottom:20px}
 .lens-card,.acc-card{background:var(--surface2);border:1px solid var(--border);border-radius:var(--radius);padding:16px;transition:border-color .2s;position:relative}
 .lens-card:hover,.acc-card:hover{border-color:var(--border2)}
 .lens-card .lens-name,.acc-card .acc-name{font-size:14px;font-weight:600;margin-bottom:4px}
@@ -280,7 +282,7 @@ h1.hub-title{font-size:clamp(36px,6vw,56px);font-weight:800;letter-spacing:-1.5p
 /* Kyle's Pick section */
 .kyles-pick{background:var(--surface);border:2px solid var(--accent);border-radius:var(--radius-xl);padding:24px;margin-bottom:24px;position:relative}
 .kyles-pick::before{content:"KYLE'S PICK";position:absolute;top:-10px;left:20px;font-size:11px;font-weight:700;color:var(--accent2);background:var(--bg);padding:0 8px;letter-spacing:1px}
-.kyles-pick-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:14px;margin-top:8px}
+.kyles-pick-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(240px,100%),1fr));gap:14px;margin-top:8px}
 .kyles-pick-item{background:var(--surface2);border:1px solid var(--border);border-radius:var(--radius);padding:14px}
 .kyles-pick-item .kp-type{font-size:11px;color:var(--text3);text-transform:uppercase;letter-spacing:1px;margin-bottom:4px}
 .kyles-pick-item .kp-name{font-size:14px;font-weight:600;margin-bottom:2px}
@@ -297,7 +299,7 @@ h1.hub-title{font-size:clamp(36px,6vw,56px);font-weight:800;letter-spacing:-1.5p
 .kit-budget-row .budget-value.red{color:var(--red)}
 .kit-budget-row.total{font-weight:700;font-size:15px}
 
-.kit-suggested-items{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:14px;margin-top:16px;margin-bottom:24px}
+.kit-suggested-items{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(260px,100%),1fr));gap:14px;margin-top:16px;margin-bottom:24px}
 .kit-suggested-item{background:var(--surface2);border:1px solid var(--border);border-radius:var(--radius);padding:16px}
 .kit-suggested-item .ksi-type{font-size:11px;color:var(--text3);text-transform:uppercase;letter-spacing:1px;margin-bottom:4px}
 .kit-suggested-item .ksi-name{font-size:14px;font-weight:600;margin-bottom:2px}
