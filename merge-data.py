@@ -1,129 +1,123 @@
 #!/usr/bin/env python3
-"""Merge Adorama + Amazon data into rigscout-master-data.csv"""
-import csv
-import json
-import os
+"""Merge Adorama + Amazon data into index.html camera database."""
+import json, re, sys
 
-os.chdir(os.path.dirname(os.path.abspath(__file__)))
-
-# Load JSON data
+# Load source data
 with open('adorama-data.json') as f:
-    adorama_raw = json.load(f)
-adorama = {item['id']: item for item in adorama_raw}
+    adorama_list = json.load(f)
+adorama = {a['id']: a for a in adorama_list}
 
 with open('amazon-review-data.json') as f:
-    amazon = json.load(f)
+    amazon_reviews = json.load(f)
 
 with open('amazon-affiliate-links.json') as f:
-    affiliate = json.load(f)
+    amazon_links = json.load(f)
 
-# Read existing CSV
-with open('rigscout-master-data.csv', newline='') as f:
-    reader = csv.DictReader(f)
-    fieldnames = list(reader.fieldnames)
-    rows = list(reader)
+# ASIN corrections
+asin_fixes = {
+    'sony-fx6': 'B08NSHMG8X',
+    'sony-fx30': 'B0BGQGBW8J',
+}
 
-# Add new columns
-new_cols = [
-    'adorama_price', 'adorama_rating', 'adorama_review_count', 'adorama_in_stock',
-    'amazon_rating', 'amazon_review_count',
-    'amazon_affiliate_url',
-    'avg_rating', 'total_review_count'
-]
-for col in new_cols:
-    if col not in fieldnames:
-        fieldnames.append(col)
+# Read index.html
+with open('index.html', 'r') as f:
+    html = f.read()
 
-# Merge data
-for row in rows:
-    cid = row['id']
+# Find the cameras JSON array in the DB
+# It starts with "cameras:[" and ends with "]"
+db_match = re.search(r'const DB = \{\s*cameras:\s*\[(.+?)\],\s*lenses:', html, re.DOTALL)
+if not db_match:
+    print("ERROR: Could not find camera database in index.html")
+    sys.exit(1)
+
+cameras_str = db_match.group(1)
+
+# Parse individual camera objects
+# Each camera is a JSON object {...}
+camera_objects = []
+depth = 0
+start = None
+for i, ch in enumerate(cameras_str):
+    if ch == '{' and depth == 0:
+        start = i
+    if ch == '{': depth += 1
+    if ch == '}': depth -= 1
+    if ch == '}' and depth == 0 and start is not None:
+        camera_objects.append((start, i+1, cameras_str[start:i+1]))
+        start = None
+
+print(f"Found {len(camera_objects)} cameras in index.html")
+
+updated_cameras_str = cameras_str
+offset = 0
+
+for start_pos, end_pos, cam_str in camera_objects:
+    try:
+        cam = json.loads(cam_str)
+    except:
+        print(f"  WARN: Could not parse camera at position {start_pos}")
+        continue
     
-    # Adorama data
-    if cid in adorama:
-        ad = adorama[cid]
-        row['adorama_price'] = ad.get('adorama_price', '')
-        row['adorama_rating'] = ad.get('adorama_rating', '')
-        row['adorama_review_count'] = ad.get('adorama_review_count', '0')
-        row['adorama_in_stock'] = ad.get('adorama_in_stock', '')
-        # Update adorama link if we have a better one
-        if ad.get('adorama_link'):
-            row['adoramaLink'] = ad['adorama_link']
+    cam_id = cam.get('id', '')
+    changed = False
     
-    # Amazon review data
-    if cid in amazon:
-        am = amazon[cid]
-        row['amazon_rating'] = am.get('rating') if am.get('rating') is not None else ''
-        row['amazon_review_count'] = am.get('reviewCount') if am.get('reviewCount') is not None else ''
+    # Remove test salePrice if present
+    if 'salePrice' in cam:
+        del cam['salePrice']
+        changed = True
     
-    # Amazon affiliate URL
-    if cid in affiliate:
-        aff = affiliate[cid]
-        row['amazon_affiliate_url'] = aff.get('affiliate_url', '')
-        # Update the amazonLink column too
-        row['amazonLink'] = aff['affiliate_url']
+    # Update Amazon link with affiliate tag + fix ASINs
+    if cam_id in amazon_links:
+        link_data = amazon_links[cam_id]
+        asin = asin_fixes.get(cam_id, link_data['asin'])
+        new_url = f"https://www.amazon.com/dp/{asin}?tag=c41cinema-20"
+        if cam.get('amazonLink') != new_url:
+            cam['amazonLink'] = new_url
+            changed = True
     
-    # Calculate averaged rating across all 3 retailers
-    ratings = []
-    counts = []
+    # Update Adorama link if we have a better one
+    if cam_id in adorama:
+        ad = adorama[cam_id]
+        if ad.get('adorama_link') and cam.get('adoramaLink') != ad['adorama_link']:
+            cam['adoramaLink'] = ad['adorama_link']
+            changed = True
     
-    # B&H
-    bh_r = row.get('bh_rating', '')
-    if bh_r and bh_r != '':
-        try:
-            ratings.append(float(bh_r))
-        except: pass
-    bh_c = row.get('bh_review_count', '')
-    if bh_c and bh_c != '':
-        try:
-            counts.append(int(bh_c))
-        except: pass
+    # Add review data fields
+    # Amazon
+    if cam_id in amazon_reviews:
+        ar = amazon_reviews[cam_id]
+        if ar.get('rating') is not None:
+            cam['amazonRating'] = ar['rating']
+            cam['amazonReviews'] = ar['reviewCount']
+            changed = True
     
     # Adorama
-    ad_r = row.get('adorama_rating', '')
-    if ad_r and ad_r != '':
-        try:
-            ratings.append(float(ad_r))
-        except: pass
-    ad_c = row.get('adorama_review_count', '0')
-    if ad_c and ad_c != '' and ad_c != '0':
-        try:
-            counts.append(int(ad_c))
-        except: pass
+    if cam_id in adorama:
+        ad = adorama[cam_id]
+        rating = ad.get('adorama_rating', '')
+        reviews = ad.get('adorama_review_count', '0')
+        if rating and rating != '':
+            cam['adoramaRating'] = float(rating)
+            changed = True
+        if reviews and int(reviews) > 0:
+            cam['adoramaReviews'] = int(reviews)
+            changed = True
     
-    # Amazon
-    am_r = row.get('amazon_rating', '')
-    if am_r and am_r != '':
-        try:
-            ratings.append(float(am_r))
-        except: pass
-    am_c = row.get('amazon_review_count', '')
-    if am_c and am_c != '':
-        try:
-            counts.append(int(am_c))
-        except: pass
-    
-    # Average rating (simple average across retailers that have ratings)
-    if ratings:
-        row['avg_rating'] = round(sum(ratings) / len(ratings), 2)
-    else:
-        row['avg_rating'] = ''
-    
-    # Total review count (sum across all retailers)
-    row['total_review_count'] = sum(counts) if counts else ''
+    if changed:
+        # Re-serialize - compact JSON
+        new_cam_str = json.dumps(cam, separators=(',', ':'), ensure_ascii=False)
+        adj_start = start_pos + offset
+        adj_end = end_pos + offset
+        updated_cameras_str = updated_cameras_str[:adj_start] + new_cam_str + updated_cameras_str[adj_end:]
+        offset += len(new_cam_str) - (end_pos - start_pos)
+        print(f"  Updated: {cam_id}")
 
-# Write merged CSV
-with open('rigscout-master-data.csv', 'w', newline='') as f:
-    writer = csv.DictWriter(f, fieldnames=fieldnames)
-    writer.writeheader()
-    writer.writerows(rows)
+# Replace in HTML
+old_section = db_match.group(0)
+new_section = old_section.replace(cameras_str, updated_cameras_str)
+html = html.replace(old_section, new_section)
 
-# Print summary
-print("Merge complete!")
-print(f"Total cameras: {len(rows)}")
-print(f"Columns: {len(fieldnames)}")
-print("\nSample data (first 5):")
-for row in rows[:5]:
-    print(f"  {row['id']}: avg={row['avg_rating']}, total_reviews={row['total_review_count']}, "
-          f"bh={row.get('bh_rating','?')}/{row.get('bh_review_count','?')}, "
-          f"adorama={row.get('adorama_rating','?')}/{row.get('adorama_review_count','?')}, "
-          f"amazon={row.get('amazon_rating','?')}/{row.get('amazon_review_count','?')}")
+with open('index.html', 'w') as f:
+    f.write(html)
+
+print("\nDone! index.html updated.")
