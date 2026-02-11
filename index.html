@@ -73,7 +73,7 @@ h1.hub-title{font-size:clamp(36px,6vw,56px);font-weight:800;letter-spacing:-1.5p
 .hub-subtitle{font-size:clamp(16px,2.5vw,18px);color:var(--text2);line-height:1.6;margin-bottom:48px;font-weight:400;max-width:540px;margin-left:auto;margin-right:auto}
 
 .quiz-hub-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(280px,100%),1fr));gap:16px;max-width:720px;width:100%;padding:0 24px;position:relative}
-.quiz-hub-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-xl);padding:28px;text-align:left;transition:all .3s ease;cursor:pointer;position:relative;overflow:hidden}
+.quiz-hub-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-xl);padding:28px;text-align:left;transition:all .3s ease;cursor:pointer;position:relative;overflow:hidden;font-family:inherit;font-size:inherit;color:inherit;width:100%;display:block;-webkit-tap-highlight-color:transparent;touch-action:manipulation}
 .quiz-hub-card-primary{border-color:var(--accent);box-shadow:0 0 30px rgba(220,38,38,.15),0 0 60px rgba(220,38,38,.05)}
 @media(hover:hover){.quiz-hub-card:hover{border-color:var(--accent);transform:translateY(-3px);box-shadow:0 8px 32px rgba(0,0,0,.3)}}
 .quiz-hub-card.disabled{cursor:not-allowed;opacity:.5}
@@ -624,7 +624,7 @@ footer{padding:32px 24px;text-align:center;color:var(--text3);font-size:12px;bor
   </div>
 
   <div class="quiz-hub-grid fade-up" style="animation-delay:.15s">
-    <div class="quiz-hub-card quiz-hub-card-primary" onclick="startQuiz(event)" ontouchend="startQuiz(event)">
+    <button type="button" class="quiz-hub-card quiz-hub-card-primary" onclick="startQuiz()" style="-webkit-appearance:none;-webkit-user-select:none;user-select:none">
       <div class="card-icon">⚡</div>
       <div class="card-title">Quick Match</div>
       <div class="card-desc">15 questions about how you shoot. We recommend your top cameras with full kit breakdowns.</div>
@@ -632,7 +632,7 @@ footer{padding:32px 24px;text-align:center;color:var(--text3);font-size:12px;bor
         <span>~3 minutes</span>
       </div>
       <div class="btn btn-primary" style="margin-top:16px;width:100%;font-size:15px;padding:14px 20px;text-align:center;pointer-events:none">Start the Quiz →</div>
-    </div>
+    </button>
     <div class="quiz-hub-card disabled">
       <div class="card-icon">🔬</div>
       <div class="card-title">Deep Dive</div>
